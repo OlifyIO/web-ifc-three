@@ -1,6 +1,6 @@
 {
-  "name": "web-ifc-three",
-  "version": "0.0.99",
+  "name": "@olifyio/web-ifc-three",
+  "version": "0.0.100",
   "description": "This library is the implementation of [web-ifc](https://github.com/tomvandig/web-ifc) for [THREE.js](https://github.com/mrdoob/three.js/). This is the official IFCLoader of Three.js.",
   "main": "index.js",
   "private": true,
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agviegas/web-ifc-three.git"
+    "url": "git+https://github.com/OlifyIO/web-ifc-three.git"
   },
   "keywords": [
     "bim",
@@ -26,9 +26,9 @@
   "author": "",
   "license": "Mozilla Public License Version 2.0",
   "bugs": {
-    "url": "https://github.com/agviegas/web-ifc-three/issues"
+    "url": "https://github.com/OlifyIO/web-ifc-three/issues"
   },
-  "homepage": "https://github.com/agviegas/web-ifc-three#readme",
+  "homepage": "https://github.com/OlifyIO/web-ifc-three#readme",
   "workspaces": [
     "web-ifc-three",
     "example"
