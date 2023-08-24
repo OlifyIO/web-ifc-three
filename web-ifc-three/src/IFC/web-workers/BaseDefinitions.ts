@@ -1,6 +1,4 @@
-import { SubsetConfig, IfcState, WebIfcAPI } from '../BaseDefinitions';
-import { BvhManager } from '../components/BvhManager';
-import { Material, Object3D } from 'three';
+import { IfcState, WebIfcAPI } from '../BaseDefinitions';
 
 export interface IfcWorkerAPI {
     post: (data: any) => void;
@@ -16,9 +14,11 @@ export enum WorkerActions {
     updateModelStateTypes = 'updateModelStateTypes',
     updateModelStateJsonData = 'updateModelStateJsonData',
     loadJsonDataFromWorker = 'loadJsonDataFromWorker',
+    dispose = 'dispose',
 
     // WebIFC Actions
     Close = 'Close',
+    DisposeWebIfc = 'DisposeWebIfc',
     Init = 'Init',
     OpenModel = 'OpenModel',
     CreateModel = 'CreateModel',
@@ -44,6 +44,9 @@ export enum WorkerActions {
     LoadAllGeometry = 'LoadAllGeometry',
     GetFlatMesh = 'GetFlatMesh',
     SetWasmPath = 'SetWasmPath',
+    GetNameFromTypeCode = 'GetNameFromTypeCode',
+    GetIfcEntityList = 'GetIfcEntityList',
+    GetTypeCodeFromName ='GetTypeCodeFromName',
 
     // Parser
     parse = 'parse',
@@ -57,7 +60,8 @@ export enum WorkerActions {
     getMaterialsProperties = 'getMaterialsProperties',
     getPropertySets = 'getPropertySets',
     getSpatialStructure = 'getSpatialStructure',
-    getTypeProperties = 'getTypeProperties'
+    getTypeProperties = 'getTypeProperties',
+    getHeaderLine = 'getHeaderLine',
 }
 
 export enum WorkerAPIs {
@@ -94,6 +98,7 @@ export interface WorkerStateAPI extends BaseWorkerAPI {
     [WorkerActions.updateModelStateTypes]: IfcWorkerEventHandler;
     [WorkerActions.updateModelStateJsonData]: IfcWorkerEventHandler;
     [WorkerActions.loadJsonDataFromWorker]: IfcWorkerEventHandler;
+    [WorkerActions.dispose]: IfcWorkerEventHandler;
 }
 
 export interface PropertyWorkerAPI extends BaseWorkerAPI {
@@ -113,6 +118,7 @@ export interface ParserWorkerAPI extends BaseWorkerAPI {
 export interface WebIfcWorkerAPI extends BaseWorkerAPI {
     [WorkerActions.Init]: IfcWorkerEventHandler;
     [WorkerActions.Close]: IfcWorkerEventHandler;
+    [WorkerActions.DisposeWebIfc]: IfcWorkerEventHandler;
     [WorkerActions.OpenModel]: IfcWorkerEventHandler;
     [WorkerActions.CreateModel]: IfcWorkerEventHandler;
     [WorkerActions.ExportFileAsIFC]: IfcWorkerEventHandler;
@@ -137,6 +143,9 @@ export interface WebIfcWorkerAPI extends BaseWorkerAPI {
     [WorkerActions.LoadAllGeometry]: IfcWorkerEventHandler;
     [WorkerActions.GetFlatMesh]: IfcWorkerEventHandler;
     [WorkerActions.SetWasmPath]: IfcWorkerEventHandler;
+    [WorkerActions.GetNameFromTypeCode]: IfcWorkerEventHandler;
+    [WorkerActions.GetIfcEntityList]: IfcWorkerEventHandler;
+    [WorkerActions.GetTypeCodeFromName]: IfcWorkerEventHandler;
 }
 
 export interface SerializedVector {

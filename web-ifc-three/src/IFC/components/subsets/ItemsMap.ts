@@ -50,6 +50,16 @@ export class ItemsMap {
         return `${baseID} - ${materialID} - ${customID}`;
     }
 
+    // Use this only for destroying the current IFCLoader instance
+    dispose() {
+        Object.values(this.map).forEach(model => {
+            (model.indexCache as any) = null;
+            (model.map as any) = null;
+        });
+
+        (this.map as any) = null;
+    }
+
     private getGeometry(modelID: number) {
         const geometry = this.state.models[modelID].mesh.geometry;
         if (!geometry) throw new Error('Model without geometry.');
@@ -78,7 +88,8 @@ export class ItemsMap {
 
         for (let i = materialStart; i <= materialEnd; i++) {
             const index = geometry.index.array[i];
-            const expressID = geometry.attributes.expressID.array[index];
+            const bufferAttr = geometry.attributes.expressID as BufferAttribute;
+            const expressID = bufferAttr.array[index];
 
             // First iteration
             if (prevExpressID === -1) {

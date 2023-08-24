@@ -24,6 +24,11 @@ export class WebIfcWorker implements WebIfcWorkerAPI {
         this.worker.post(data);
     };
 
+    async DisposeWebIfc(data: IfcEventData) {
+        this.nullifyWebIfc();
+        this.worker.post(data);
+    }
+
     CloseModel(data: IfcEventData) {
         this.webIFC.CloseModel(data.args.modelID);
         this.worker.post(data);
@@ -80,7 +85,12 @@ export class WebIfcWorker implements WebIfcWorkerAPI {
 
     GetLine(data: IfcEventData) {
         const args = data.args;
-        data.result = this.webIFC.GetLine(args.modelID, args.expressID, args.flatten);
+        try {
+           data.result = this.webIFC.GetLine(args.modelID, args.expressID, args.flatten);
+        } catch (e) {
+            console.log(`There was a problem getting the properties of the item ${args.expressID}`);
+            data.result = {};
+        }
         this.worker.post(data);
     }
 
@@ -140,7 +150,18 @@ export class WebIfcWorker implements WebIfcWorkerAPI {
     }
 
     WriteLine(data: IfcEventData) {
-        this.webIFC.WriteLine(data.args.modelID, data.args.lineObject);
+        const modelID = data.args.modelID;
+        const serializedObject = data.args.lineObject;
+
+        // This is necessary because of the serialization of the web worker
+        const object = this.webIFC.GetLine(modelID, serializedObject.expressID);
+        Object.keys(serializedObject).forEach(propName => {
+            if(object[propName] !== undefined) {
+                object[propName] = serializedObject[propName];
+            }
+        })
+
+        this.webIFC.WriteLine(data.args.modelID, object);
         this.worker.post(data);
     }
 
@@ -152,6 +173,21 @@ export class WebIfcWorker implements WebIfcWorkerAPI {
     getSubArray(data: IfcEventData) {
         const args = data.args;
         this.webIFC.getSubArray(args.heap, args.startPtr, args.sizeBytes);
+        this.worker.post(data);
+    }
+
+    GetNameFromTypeCode(data: IfcEventData) {
+        data.result=this.webIFC.GetNameFromTypeCode(data.args.modelID);
+        this.worker.post(data);
+    }
+
+    GetIfcEntityList(data: IfcEventData) {
+        data.result=this.webIFC.GetIfcEntityList(data.args.modelID);
+        this.worker.post(data);
+    }
+
+    GetTypeCodeFromName(data: IfcEventData) {
+        data.result=this.webIFC.GetTypeCodeFromName(data.args.typeName);
         this.worker.post(data);
     }
 

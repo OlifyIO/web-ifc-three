@@ -65,7 +65,8 @@ export interface IfcState {
     worker: Worker;
     webIfcSettings?: LoaderSettings;
     onProgress?: (event: ParserProgress) => void;
-    coordinationMatrix?: Matrix4
+    coordinationMatrix?: Matrix4,
+    wasmPath?: string;
 }
 
 export interface IfcMesh extends Mesh {
@@ -83,6 +84,15 @@ export interface pName {
     relating: string;
     related: string;
     key: string;
+}
+
+export interface NewIfcModel {
+    schema: string;
+    name?: string;
+    description?: string[];
+    authors?: string[];
+    organizations?: string[];
+    authorization?: string;
 }
 
 export const PropsNames = {
@@ -134,11 +144,13 @@ export interface WebIfcAPI {
      */
     OpenModel(data: string | Uint8Array, settings?: LoaderSettings): number | Promise<number>;
 
+    GetHeaderLine(modelID: number, headerType: number): any | Promise<any>;
+
     /**
      * Creates a new model and returns a modelID number
      * @data Settings settings for generating data the model
      */
-    CreateModel(settings?: LoaderSettings): number | Promise<number>;
+    CreateModel(model: NewIfcModel, settings?: LoaderSettings): number | Promise<number>;
 
     ExportFileAsIFC(modelID: number): Uint8Array | Promise<Uint8Array>;
 
@@ -172,6 +184,12 @@ export interface WebIfcAPI {
     GetVertexArray(ptr: number, size: number): Float32Array | Promise<Float32Array>;
 
     GetIndexArray(ptr: number, size: number): Uint32Array | Promise<Uint32Array>;
+
+    GetNameFromTypeCode(type:number): string | Promise<string>;
+
+    GetTypeCodeFromName(typeName:string): number | Promise<number>;
+
+    GetIfcEntityList(modelID: number) : Array<number> | Promise<Array<number>>;
 
     getSubArray(heap: any, startPtr: any, sizeBytes: any): any | Promise<any>;
 

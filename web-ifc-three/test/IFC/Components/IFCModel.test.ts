@@ -1,18 +1,17 @@
-import {IFCManager} from "../../../src/IFC/components/IFCManager";
-import {BufferGeometry, Material, Mesh, Scene} from "three";
-import {IFCModel} from "../../../src/IFC/components/IFCModel";
-import {BaseSubsetConfig} from "../../../src/IFC/BaseDefinitions";
+import { BufferGeometry, Material, Mesh, Scene } from "three";
+import { BaseSubsetConfig } from "../../../src/IFC/BaseDefinitions";
+import { IFCManager } from "../../../src/IFC/components/IFCManager";
+import { IFCModel } from "../../../src/IFC/components/IFCModel";
 
 describe("IFCModel", () => {
 
     let ifcManager: IFCManager;
     let ifcModel: IFCModel;
-    let mesh: Mesh;
 
     beforeEach(() => {
         ifcManager  = new IFCManager();
-        mesh        = new Mesh();
-        ifcModel    = new IFCModel(mesh, ifcManager);
+        ifcModel    = new IFCModel(0);
+        ifcModel.setIFCManager(ifcManager);
     });
 
     test('setWasmPath', () => {

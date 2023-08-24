@@ -2,16 +2,18 @@ import {
     IdAttrName
 } from '../../BaseDefinitions';
 import { IfcState } from '../../BaseDefinitions';
-import { BufferGeometry } from 'three';
+import { BufferAttribute, BufferGeometry } from 'three';
 import { WebIfcPropertyManager } from './WebIfcPropertyManager';
 import { JSONPropertyManager } from './JSONPropertyManager';
 import { PropertyManagerAPI, PropertyAPI } from './BaseDefinitions';
-import { IfcElements } from '../IFCElementsMap';
+import {PropertySerializer} from "./PropertySerializer";
 
 /**
  * Contains the logic to get the properties of the items within an IFC model.
  */
 export class PropertyManager implements PropertyManagerAPI {
+    serializer?: PropertySerializer;
+
     private readonly webIfcProps: WebIfcPropertyManager;
     private readonly jsonProps: JSONPropertyManager;
     private currentProps: PropertyAPI;
@@ -20,12 +22,19 @@ export class PropertyManager implements PropertyManagerAPI {
         this.webIfcProps = new WebIfcPropertyManager(state);
         this.jsonProps = new JSONPropertyManager(state);
         this.currentProps = this.webIfcProps;
+        this.serializer = new PropertySerializer(this.state.api);
     }
 
     getExpressId(geometry: BufferGeometry, faceIndex: number) {
         if (!geometry.index) throw new Error('Geometry does not have index information.');
         const geoIndex = geometry.index.array;
-        return geometry.attributes[IdAttrName].getX(geoIndex[3 * faceIndex]);
+        const bufferAttr = geometry.attributes[IdAttrName] as BufferAttribute;
+        return bufferAttr.getX(geoIndex[3 * faceIndex]);
+    }
+
+    async getHeaderLine(modelID: number, headerType: number) {
+        this.updateCurrentProps();
+        return this.currentProps.getHeaderLine(modelID, headerType);
     }
 
     async getItemProperties(modelID: number, elementID: number, recursive = false) {
