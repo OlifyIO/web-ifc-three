@@ -1,18 +1,18 @@
+import { BufferGeometry, Material, Matrix4, Scene } from 'three';
 import * as WebIFC from 'web-ifc';
-import { IFCParser, ParserAPI, ParserProgress } from './IFCParser';
-import { SubsetManager } from './subsets/SubsetManager';
-import { PropertyManager } from './properties/PropertyManager';
-import { TypeManager } from './TypeManager';
-import { SubsetConfig, IfcState, JSONObject } from '../BaseDefinitions';
-import {BufferGeometry, Material, Matrix4, Scene} from 'three';
-import { IFCModel } from './IFCModel';
-import { BvhManager } from './BvhManager';
 import { LoaderSettings } from 'web-ifc';
+import { IfcState, JSONObject, SubsetConfig } from '../BaseDefinitions';
 import { IFCWorkerHandler } from '../web-workers/IFCWorkerHandler';
-import { PropertyManagerAPI } from './properties/BaseDefinitions';
-import { MemoryCleaner } from './MemoryCleaner';
+import { BvhManager } from './BvhManager';
+import { IFCModel } from './IFCModel';
+import { IFCParser, ParserAPI, ParserProgress } from './IFCParser';
 import { IFCUtils } from './IFCUtils';
-import { Data } from './sequence/Data'
+import { MemoryCleaner } from './MemoryCleaner';
+import { TypeManager } from './TypeManager';
+import { PropertyManagerAPI } from './properties/BaseDefinitions';
+import { PropertyManager } from './properties/PropertyManager';
+import { Data } from './sequence/Data';
+import { SubsetManager } from './subsets/SubsetManager';
 
 /**
  * Contains all the logic to work with the loaded IFC files (select, edit, etc).
@@ -417,7 +417,6 @@ export class IFCManager {
      * If you want to load an IFC later, you'll need to create a new instance.
      */
     async dispose() {
-        IFCModel.dispose();
         await this.cleaner.dispose();
         this.subsets.dispose();
         if(this.worker && this.state.worker.active) await this.worker.terminate();

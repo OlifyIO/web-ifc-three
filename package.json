@@ -1,5 +1,4 @@
 {
-  "version": "0.0.99",
   "name": "@olifyio/web-ifc-three",
   "version": "0.0.125",
   "description": "This library is the implementation of [web-ifc](https://github.com/tomvandig/web-ifc) for [THREE.js](https://github.com/mrdoob/three.js/). This is the official IFCLoader of Three.js.",

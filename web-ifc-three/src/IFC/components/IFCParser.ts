@@ -1,20 +1,18 @@
 //@ts-ignore
 import {
-    PlacedGeometry,
-    Color as ifcColor,
-    IfcGeometry,
-    IFCSPACE,
-    FlatMesh,
-    IFCOPENINGELEMENT,
-    IFCPRODUCTDEFINITIONSHAPE
-} from 'web-ifc';
-import { IfcState, IfcMesh } from '../BaseDefinitions';
-import {
   BufferAttribute, BufferGeometry, Color, DoubleSide,
   Matrix4, Mesh, MeshLambertMaterial
 } from 'three';
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
-import { Color as ifcColor, FlatMesh, IfcGeometry, IFCOPENINGELEMENT, IFCSPACE, PlacedGeometry } from 'web-ifc';
+import {
+  FlatMesh,
+  IFCOPENINGELEMENT,
+  IFCPRODUCTDEFINITIONSHAPE,
+  IFCSPACE,
+  IfcGeometry,
+  PlacedGeometry,
+  Color as ifcColor
+} from 'web-ifc';
 import { IfcMesh, IfcState } from '../BaseDefinitions';
 import { BvhManager } from './BvhManager';
 import { IFCModel } from './IFCModel';
